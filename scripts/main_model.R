@@ -5,14 +5,15 @@
 # Set up libraries and paths ----------------------------------------------
 
 library(foreach)
-library(doMC)
+library(doParallel)
 library(lubridate)
 library(magrittr)
 library(coda)
 library(tidyverse)
 library(rootSolve)
-  
-registerDoMC(4)  #change the 2 to your number of CPU cores
+
+clust <- makeCluster("PSOCK", detectCores() - 1L)
+registerDoParallel(clust)  #change the 2 to your number of CPU cores
 
 rm(list=ls(all=TRUE))
 
@@ -20,6 +21,8 @@ rm(list=ls(all=TRUE))
 # Set user-specific directory path and load datasets
 if(Sys.info()["user"]=="adamkuchars" | Sys.info()["user"]=="adamkucharski") {
   setwd("~/Documents/GitHub/2020-nCov/stoch_model/")
+  dropbox_path <- ""
+} else {
   dropbox_path <- ""
 }
 
@@ -91,5 +94,4 @@ output_smc$lik
 
 source("R/outputs_main.R")
 
-
-
+stopCluster(clust)
