@@ -1,3 +1,4 @@
 outputs/*.Rdata
 outputs/bootstrap_fit.RData
 .vscode/*
+stoch_model/outputs/*.RData
